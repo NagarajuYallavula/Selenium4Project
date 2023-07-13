@@ -53,6 +53,12 @@ public class LoginPage extends BaseClass {
 		search_btn.click();
 	}
 	
+	public boolean verifySearchResults(String result) {
+		boolean appear = false;
+		
+		return appear; 
+	}
+	
 	public void navigateToHomePage() {
 		nopCommerce_img.click();
 	}
