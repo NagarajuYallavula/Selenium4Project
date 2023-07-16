@@ -3,6 +3,7 @@ package com.project.smoketests;
 import static org.testng.Assert.assertEquals;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -33,7 +34,7 @@ public class FirstTest {
 		driver.close();
 	}
 
-	@Test
+//	@Test(groups= {"api"})
 	public void loginTest1() {
 		
 		driver.navigate().to(baseUrl + "/login");
@@ -47,7 +48,18 @@ public class FirstTest {
 		assertEquals(flashMsg.trim(), "Your username is invalid!");
 		System.out.println();
 	}
-	@Test
+	
+//	@Test
+	public void googleTest() {
+		
+		driver.navigate().to("https://www.google.co.in/");
+		driver.findElement(By.name("q")).sendKeys("Selenium Tutorial");
+		driver.findElement(By.name("q")).sendKeys(Keys.ENTER);
+		
+		driver.getTitle().contains("Selenium");
+	}
+	
+//	@Test
 	public void dropdownTest() {
 		
 		driver.navigate().to(baseUrl + "/dropdown");
@@ -66,5 +78,24 @@ public class FirstTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+	}
+	
+	@Test
+	public void exceptionHandlingTest() {
+		
+		int x = 5;
+		try {
+			double y = x/0;
+			System.out.println("### value of y: "+y);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void throwsException() throws InterruptedException {
+		Thread.sleep(1000);
+		System.out.println("throws exception");
 	}
 }
