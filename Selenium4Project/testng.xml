@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="Test Suite1">
 	<test name="Test">
+		<parameter name="browser" value="firefox" />
 		<classes>
-			<class name="com.project.smoketests.FirstTest" />
-			<class name="com.project.smoketests.SpecialElements" />
+			<class name="com.project.module1tests.Feature1Tests" />
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->
