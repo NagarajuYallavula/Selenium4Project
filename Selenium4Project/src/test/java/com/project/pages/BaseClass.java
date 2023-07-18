@@ -2,7 +2,9 @@ package com.project.pages;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -15,9 +17,19 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.testng.ITestContext;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.project.utilities.ExtentReport;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -25,6 +37,10 @@ public class BaseClass {
 
 	public WebDriver driver = null;
 	public String baseUrl = "https://demo.nopcommerce.com/";
+	
+	public ExtentReports extent = new ExtentReports();
+	public ExtentSparkReporter sparkReport;
+	public ExtentTest logger;
 	
 	@Parameters("browser")
 	@BeforeTest
@@ -68,6 +84,38 @@ public class BaseClass {
 		driver.quit();
 	}
 	
+	@BeforeSuite
+	public void setupSuite() {
+		
+		extentReportSetup();
+	}
+	
+	@AfterSuite
+	public void tearDownSuite() {
+		System.out.println("Extent report created");
+		extent.flush();
+	}
+	
+	public void extentReportSetup() {
+		
+		System.out.println("Extent Report setup...");
+		
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		String repName = "Test-Report-" + timeStamp + ".html";
+		sparkReport = new ExtentSparkReporter(System.getProperty("user.dir")+"/test-output/Report/"+repName);
+		
+		extent.attachReporter(sparkReport);
+		extent.setSystemInfo("Host Name", "localHost");;
+		extent.setSystemInfo("Environment", "QA");
+		extent.setSystemInfo("User", "Tester");
+		
+		sparkReport.config().setDocumentTitle("Selenium  Test Automation");
+		sparkReport.config().setReportName("Test Summary Report");
+		sparkReport.config().setTheme(Theme.STANDARD);
+		
+		extent.attachReporter(sparkReport);
+	}
+	
 	public void takeScreenshot(WebDriver driver, String tName) throws IOException{
 		try{
 						
@@ -82,4 +130,5 @@ public class BaseClass {
 			//log.info(e.getMessage());//added for logging
 		}
 	}
+	
 }
